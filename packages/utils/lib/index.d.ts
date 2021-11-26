@@ -1,2 +1,3 @@
 import logger from "./src/logger";
-export { logger };
+import yarnEnable from "./src/yarnEnable";
+export { logger, yarnEnable };

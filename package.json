@@ -5,7 +5,8 @@
     "packages/*"
   ],
   "scripts": {
-    "build": "lerna run build"
+    "build": "lerna run build",
+    "watch": "lerna run watch"
   },
   "devDependencies": {
     "lerna": "^4.0.0"
