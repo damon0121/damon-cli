@@ -24,3 +24,4 @@ if (process.argv.slice(2).length) {
 else {
     yargs_1.default.showHelp();
 }
+//# sourceMappingURL=index.js.map

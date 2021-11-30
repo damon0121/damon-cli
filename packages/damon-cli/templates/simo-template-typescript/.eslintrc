@@ -1,0 +1,6 @@
+{
+  "extends": ["@xm/eslint-config-simo"],
+  "rules": {
+    "no-console": "warn"
+  }
+}

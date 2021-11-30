@@ -45,48 +45,10 @@ var utils_1 = require("@damon/utils");
 var inquirer_1 = __importDefault(require("inquirer"));
 var validate_npm_package_name_1 = __importDefault(require("validate-npm-package-name"));
 var chalk_1 = __importDefault(require("chalk"));
-var glob_1 = __importDefault(require("glob"));
-var mustache_1 = __importDefault(require("mustache"));
 var getPackageParams_1 = __importDefault(require("./getPackageParams"));
 var getTemplateParams_1 = __importDefault(require("./getTemplateParams"));
 var getProjectName_1 = __importDefault(require("./getProjectName"));
-var copyPackageTpl = function (cwd, params) {
-    var tpl = fs_extra_1.default.readFileSync(params.templatePath, "utf-8");
-    var content = mustache_1.default.render(tpl, params.context);
-    console.log("".concat(chalk_1.default.green("Write:"), " ").concat(path_1.default.relative(cwd, params.target)));
-    fs_extra_1.default.writeFileSync(params.target, content, "utf-8");
-};
-function copyTemplate(target, packageParams, template) {
-    var repository = template.repository;
-    var sourcePath = path_1.default.resolve(__dirname, "../../".concat(repository));
-    var files = glob_1.default.sync("**/*", {
-        cwd: sourcePath,
-        dot: true,
-        ignore: ["**/node_modules/**"],
-    });
-    files.forEach(function (file) {
-        var absFile = path_1.default.join(sourcePath, file);
-        var absTarget = path_1.default.join(target, file);
-        if (fs_extra_1.default.statSync(absFile).isDirectory()) {
-            if (!fs_extra_1.default.existsSync(absTarget)) {
-                return fs_extra_1.default.mkdirSync(absTarget);
-            }
-            return;
-        }
-        else {
-            if (file.endsWith(".tpl")) {
-                copyPackageTpl(target, {
-                    templatePath: absFile,
-                    target: path_1.default.join(target, file.replace(/\.tpl$/, "")),
-                    context: { packageParams: packageParams },
-                });
-            }
-            else {
-                fs_extra_1.default.copyFileSync(absFile, absTarget);
-            }
-        }
-    });
-}
+var copyTemplateProject_1 = __importDefault(require("./copyTemplateProject"));
 function registerCreate(yargs) {
     yargs.command("create [name]", "创建项目", function (yargs) {
         yargs.positional("name", {
@@ -95,7 +57,7 @@ function registerCreate(yargs) {
         });
     }, function (argv) {
         return __awaiter(this, void 0, void 0, function () {
-            var projectName, result, projectPath, isOverwrite, packageParams, templateParams, pkgManagerParams;
+            var projectName, projectPath, result, isOverwrite, packageParams, templateParams, pkgManagerParams;
             return __generator(this, function (_a) {
                 switch (_a.label) {
                     case 0:
@@ -106,6 +68,7 @@ function registerCreate(yargs) {
                         projectName = _a.sent();
                         _a.label = 2;
                     case 2:
+                        projectPath = path_1.default.resolve(process.cwd(), projectName);
                         result = (0, validate_npm_package_name_1.default)(projectName);
                         if (!result.validForNewPackages) {
                             console.error(chalk_1.default.red("Invalid project name: \"".concat(argv.name, "\"")));
@@ -119,13 +82,12 @@ function registerCreate(yargs) {
                                 });
                             return [2];
                         }
-                        projectPath = path_1.default.resolve(process.cwd(), projectName);
                         if (!fs_extra_1.default.existsSync(projectPath)) return [3, 6];
                         return [4, inquirer_1.default.prompt({
                                 name: "isOverwrite",
                                 type: "confirm",
                                 message: "\u5F53\u524D\u76EE\u5F55\u5DF2\u5B58\u5728\u6587\u4EF6\u5939".concat(chalk_1.default.cyan(projectName), "\uFF0C\u662F\u5426\u8986\u76D6\uFF1F"),
-                                default: false,
+                                default: true,
                             })];
                     case 3:
                         isOverwrite = (_a.sent()).isOverwrite;
@@ -150,7 +112,7 @@ function registerCreate(yargs) {
                         return [4, fs_extra_1.default.mkdir(projectPath)];
                     case 9:
                         _a.sent();
-                        copyTemplate(projectPath, packageParams, templateParams);
+                        (0, copyTemplateProject_1.default)(projectPath, packageParams, templateParams);
                         utils_1.logger.log("\uD83C\uDF89  Successfully created project ".concat(chalk_1.default.yellow(argv.name), "."));
                         utils_1.logger.log("\uD83D\uDC49  Get started with the following commands:\n\n" +
                             chalk_1.default.cyan(" ".concat(chalk_1.default.gray("$"), " cd ").concat(argv.name, "\n")) +
@@ -164,4 +126,4 @@ function registerCreate(yargs) {
     });
 }
 exports.default = registerCreate;
-//# sourceMappingURL=create.js.map
+//# sourceMappingURL=index.js.map
