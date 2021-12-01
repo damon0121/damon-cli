@@ -1,4 +1,3 @@
-"use strict";
 var __awaiter = (this && this.__awaiter) || function (thisArg, _arguments, P, generator) {
     function adopt(value) { return value instanceof P ? value : new P(function (resolve) { resolve(value); }); }
     return new (P || (P = Promise))(function (resolve, reject) {
@@ -35,12 +34,8 @@ var __generator = (this && this.__generator) || function (thisArg, body) {
         if (op[0] & 5) throw op[1]; return { value: op[0] ? op[1] : void 0, done: true };
     }
 };
-var __importDefault = (this && this.__importDefault) || function (mod) {
-    return (mod && mod.__esModule) ? mod : { "default": mod };
-};
-Object.defineProperty(exports, "__esModule", { value: true });
-var inquirer_1 = __importDefault(require("inquirer"));
-var lodash_1 = __importDefault(require("lodash"));
+import inquirer from "inquirer";
+import _ from "lodash";
 var templatesData = [
     {
         name: "simo-template",
@@ -65,7 +60,7 @@ var getTemplateParams = function () { return __awaiter(void 0, void 0, void 0, f
                     name: item.name,
                     value: item.name,
                 }); });
-                return [4, inquirer_1.default.prompt([
+                return [4, inquirer.prompt([
                         {
                             name: "templateType",
                             message: "请选择模版?",
@@ -75,9 +70,9 @@ var getTemplateParams = function () { return __awaiter(void 0, void 0, void 0, f
                     ])];
             case 1:
                 template = _a.sent();
-                return [2, lodash_1.default.find(templatesData, { name: template.templateType })];
+                return [2, _.find(templatesData, { name: template.templateType })];
         }
     });
 }); };
-exports.default = getTemplateParams;
+export default getTemplateParams;
 //# sourceMappingURL=getTemplateParams.js.map

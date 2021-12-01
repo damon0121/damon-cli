@@ -6,10 +6,11 @@ import inquirer from "inquirer";
 import ValidateNpmPackageName from "validate-npm-package-name";
 import chalk from "chalk";
 import _ from "lodash";
-import getPackageParams from "./getPackageParams";
-import getTemplateParams from "./getTemplateParams";
-import getProjectName from "./getProjectName";
-import copyTemplateProject from "./copyTemplateProject";
+import getPackageParams from "./getPackageParams.js";
+import getTemplateParams from "./getTemplateParams.js";
+import getProjectName from "./getProjectName.js";
+import copyTemplateProject from "./copyTemplateProject.js";
+import install from "./install.js";
 
 export default function registerCreate(yargs: Argv) {
   yargs.command(
@@ -66,6 +67,7 @@ export default function registerCreate(yargs: Argv) {
       logger.log(`开始创建 ${projectName} 项目!`);
       await fs.mkdir(projectPath);
       copyTemplateProject(projectPath, packageParams, templateParams);
+      await install(projectPath, pkgManagerParams.pkgManager);
       logger.log(
         `🎉  Successfully created project ${chalk.yellow(argv.name)}.`
       );

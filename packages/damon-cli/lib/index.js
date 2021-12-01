@@ -1,11 +1,7 @@
-"use strict";
-var __importDefault = (this && this.__importDefault) || function (mod) {
-    return (mod && mod.__esModule) ? mod : { "default": mod };
-};
-Object.defineProperty(exports, "__esModule", { value: true });
-var yargs_1 = __importDefault(require("yargs"));
-var create_1 = __importDefault(require("./src/create"));
-yargs_1.default
+import yargs from "yargs";
+import { hideBin } from "yargs/helpers";
+import create from "./src/create/index.js";
+var damon = yargs(hideBin(process.argv))
     .strict(true)
     .scriptName("damon")
     .usage("$0 <命令> [选项]")
@@ -17,11 +13,11 @@ yargs_1.default
     if (err)
         process.exit(1);
 });
-(0, create_1.default)(yargs_1.default);
+create(damon);
 if (process.argv.slice(2).length) {
-    yargs_1.default.parse(process.argv.slice(2));
+    damon.parse(process.argv.slice(2));
 }
 else {
-    yargs_1.default.showHelp();
+    damon.showHelp();
 }
 //# sourceMappingURL=index.js.map

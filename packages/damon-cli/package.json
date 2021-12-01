@@ -2,7 +2,12 @@
   "name": "@damon/damon-cli",
   "version": "1.0.0",
   "description": "",
-  "main": "./lib/index.js",
+  "type": "module",
+  "module": "ES2020",
+  "engines": {
+    "node": "^12.20.0 || ^14.13.1 || >=16.0.0"
+  },
+  "exports": "./lib/index.js",
   "types": "./lib/index.d.ts",
   "files": [
     "bin",
@@ -21,6 +26,7 @@
   "license": "ISC",
   "dependencies": {
     "@damon/utils": "^1.0.0",
+    "execa": "^6.0.0",
     "fs-extra": "^10.0.0",
     "glob": "^7.2.0",
     "inquirer": "^8.2.0",
@@ -32,6 +38,7 @@
     "yargs": "^17.2.1"
   },
   "devDependencies": {
+    "@types/execa": "^2.0.0",
     "@types/fs-extra": "^9.0.13",
     "@types/glob": "^7.2.0",
     "@types/inquirer": "^8.1.3",
